@@ -115,9 +115,9 @@ export default function AboutLanaPage() {
             <h2 className="font-display text-2xl font-bold text-slate-900 dark:text-white mb-6">Momen Penting Lana</h2>
             <div className="space-y-6 mb-12">
               {[
-                { date: "14 Sep 2006", event: "Lahir di Bekasi, Indonesia", icon: "bx bx-cake" },
-                { date: "18 Nov 2023", event: "Diperkenalkan sebagai Trainee JKT48 (Jak-Japan Matsuri)", icon: "bx bx-megaphone" },
-                { date: "01 Mar 2024", event: "Debut Theater (Setlist Ingin Bertemu)", icon: "bx bx-buildings" }
+                { date: "14 Sep 2006", event: "Lahir di Bekasi, Indonesia", icon: "bx bxs-cake" },
+                { date: "18 Nov 2023", event: "Diperkenalkan sebagai Trainee JKT48 (Jak-Japan Matsuri)", icon: "bx bxs-megaphone" },
+                { date: "01 Mar 2024", event: "Debut Theater (Setlist Ingin Bertemu)", icon: "bx bxs-buildings" }
               ].map((item, idx) => (
                 <div key={idx} className="flex gap-5 items-start bg-slate-50 dark:bg-slate-900 p-6 rounded-2xl border-2 border-slate-100 dark:border-slate-700 hover:border-accent transition-all">
                   <div className="w-12 h-12 rounded-xl bg-accent/10 border-2 border-accent/20 flex items-center justify-center text-accent text-2xl flex-shrink-0">
@@ -152,6 +152,17 @@ export default function AboutLanaPage() {
                   <AnimatedNumber value={13} />
                 </h2>
                 <p className="text-[0.8rem] font-black text-slate-700 dark:text-slate-400 tracking-widest uppercase">UNIT SONGS</p>
+              </div>
+
+              <div className="bg-white dark:bg-slate-900 border-2 border-slate-100 dark:border-slate-700 rounded-[32px] p-8 text-center shadow-md hover:shadow-xl transition-all relative overflow-hidden group">
+                <div className="absolute top-0 left-0 right-0 h-[4px] bg-accent opacity-0 transition-opacity group-hover:opacity-100"></div>
+                <div className="w-16 h-16 mx-auto mb-6 bg-slate-50 dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 rounded-2xl flex items-center justify-center text-3xl text-accent shadow-sm">
+                  <i className="bx bx-calendar-star" />
+                </div>
+                <h2 className="text-3xl font-black text-slate-950 dark:text-white mb-1">
+                  <AnimatedNumber value={74} />
+                </h2>
+                <p className="text-[0.8rem] font-black text-slate-700 dark:text-slate-400 tracking-widest uppercase">TOTAL SHOWS</p>
               </div>
             </div>
 
