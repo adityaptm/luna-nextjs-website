@@ -8,7 +8,7 @@ export async function GET() {
     const base =
       process.env.JKT48CONNECT_BASE_URL ||
       "https://v2.jkt48connect.com/api/jkt48";
-    const apiKey = process.env.JKT48CONNECT_PRIORITY_TOKEN;
+    const apiKey = process.env.JKT48CONNECT_PRIORITY_TOKEN || "sJbpVqLinYlp";
 
     // 1. Cek keberadaan Key
     if (!apiKey) {
