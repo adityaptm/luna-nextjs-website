@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import ShowTheaterLanaPage from "./show-theater/page";
 import GameLanaPage from "./game/page";
+import MessageBoard from "@/components/MessageBoard";
 
 function AnimatedNumber({ value }: { value: number }) {
   const [count, setCount] = useState(0);
@@ -38,6 +39,7 @@ export default function AboutLanaPage() {
     { key: "rekap", label: "Rekap Show Lana" },
     { key: "theater", label: "Show Theater Lana" },
     { key: "game", label: "Game Lana" },
+    { key: "pesan", label: "Pesan" },
     { key: "hashtag", label: "Hashtag" },
     { key: "qa", label: "Pertanyaan Seputar Lana" },
   ];
@@ -234,6 +236,13 @@ export default function AboutLanaPage() {
         {activeTab === "game" && (
           <section className="bg-white dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 rounded-[32px] shadow-xl p-10 md:p-12 transition-all">
             <GameLanaPage />
+          </section>
+        )}
+
+        {/* ================= PESAN LANA ================= */}
+        {activeTab === "pesan" && (
+          <section className="bg-white dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 rounded-[32px] shadow-xl p-10 md:p-12 transition-all">
+            <MessageBoard />
           </section>
         )}
 
