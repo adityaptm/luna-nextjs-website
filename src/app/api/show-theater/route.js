@@ -74,7 +74,7 @@ export async function GET() {
         title: show.title || "TBA",
         date: show.date || "",
         poster: show.poster || show.setlist?.poster || "",
-        members: show.members || [],
+        members: show.members || show.lineup || [],
       },
     });
   } catch (err) {

@@ -107,7 +107,12 @@ export default function ShowTheaterLanaPage() {
 
       // fleksibel: support {success:true, data:...} atau {status:true, theater:[...]}
       if (json?.success === true) {
-        setShow(json.data || null);
+        const data = json.data;
+        if (Array.isArray(data)) {
+          setShow(data[0] || null);
+        } else {
+          setShow(data || null);
+        }
         return;
       }
 
@@ -157,7 +162,9 @@ export default function ShowTheaterLanaPage() {
       ? show.members
       : Array.isArray(show.member)
         ? show.member
-        : [];
+        : Array.isArray(show.lineup)
+          ? show.lineup
+          : [];
 
     return { dateStr, timeStr, members };
   }, [show]);
@@ -218,18 +225,27 @@ export default function ShowTheaterLanaPage() {
                     const fullName = namaPanjang[key] || m?.name || "";
                     const isLana =
                       key === "lana" ||
-                      normalizeKey(fullName) === "aurhel alana";
+                      normalizeKey(fullName) === "aurhel alana" ||
+                      normalizeKey(m?.name) === "aurhel alana";
 
                     return (
                       <div
                         key={`${key}-${idx}`}
-                        className={`px-4 py-2 rounded-xl text-[0.9rem] font-bold border-2 transition-all ${
+                        className={`px-4 py-2 rounded-xl text-[0.9rem] font-bold border-2 transition-all duration-300 cursor-default group relative overflow-hidden ${
                           isLana 
-                            ? "bg-accent text-slate-900 border-accent shadow-md scale-105" 
-                            : "bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border-slate-100 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700"
+                            ? "bg-gradient-to-br from-accent to-amber-500 text-slate-900 border-accent shadow-[0_4px_20px_rgba(251,191,36,0.5)] scale-110 z-10 animate-pulse-subtle" 
+                            : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-100 dark:border-slate-700 hover:border-accent/50 hover:shadow-lg hover:-translate-y-1 hover:scale-105"
                         }`}
                       >
-                        {fullName}
+                        {/* Glow effect for Lana */}
+                        {isLana && (
+                          <div className="absolute inset-0 bg-white/20 animate-shine" />
+                        )}
+                        
+                        <span className="relative z-10 flex items-center gap-2">
+                          {isLana && <i className="bx bxs-star text-amber-900 animate-spin-slow"></i>}
+                          {fullName}
+                        </span>
                       </div>
                     );
                   })}

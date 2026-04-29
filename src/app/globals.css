@@ -87,6 +87,25 @@
       opacity: 0;
     }
   }
+
+  --animate-pulse-subtle: pulse-subtle 2s ease-in-out infinite;
+  --animate-shine: shine 3s linear infinite;
+  --animate-spin-slow: spin-slow 8s linear infinite;
+
+  @keyframes pulse-subtle {
+    0%, 100% { transform: scale(1.1); filter: brightness(1); }
+    50% { transform: scale(1.12); filter: brightness(1.15); }
+  }
+
+  @keyframes shine {
+    0% { transform: translateX(-100%) skewX(-15deg); }
+    100% { transform: translateX(200%) skewX(-15deg); }
+  }
+
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
 }
 
 .shooting-star {
