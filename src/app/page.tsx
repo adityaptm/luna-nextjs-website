@@ -41,7 +41,6 @@ export default function AboutLanaPage() {
     { key: "game", label: "Game Lana" },
     { key: "pesan", label: "Pesan" },
     { key: "hashtag", label: "Hashtag" },
-    { key: "postingan", label: "Postingan" },
     { key: "qa", label: "Pertanyaan Seputar Lana" },
   ];
 
@@ -283,27 +282,6 @@ export default function AboutLanaPage() {
                 </div>
               ))}
             </div>
-          </section>
-        )}
-
-        {/* ================= POSTINGAN ================= */}
-        {activeTab === "postingan" && (
-          <section className="bg-white dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 rounded-[32px] shadow-xl p-10 md:p-12 transition-all">
-            <h1 className="font-display text-4xl font-bold text-slate-950 dark:text-white mb-8 border-b-2 border-slate-100 dark:border-slate-700 pb-4">
-              <i className="bx bx-share-alt text-accent"></i> Latest Posts
-            </h1>
-            <div className="flex flex-col gap-5">
-              <div className="rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 flex justify-center w-full shadow-sm">
-                <iframe src="https://www.instagram.com/p/DXt_VxAE4Oj/embed" width="100%" height="450" frameBorder="0" scrolling="no" allowTransparency></iframe>
-              </div>
-              <div className="rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 flex justify-center w-full shadow-sm">
-                <iframe src="https://www.threads.net/@jkt48.lana.a/post/DW3WfvFGtbe/embed" width="100%" height="450" frameBorder="0" scrolling="no" allowTransparency></iframe>
-              </div>
-              <div className="rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 p-2 flex justify-center w-full shadow-sm" dangerouslySetInnerHTML={{ __html: `<blockquote class="twitter-tweet" data-theme="dark"><a href="https://twitter.com/AR_LanaJKT48/status/2048247400700256690"></a></blockquote><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>` }} />
-            </div>
-          </section>
-        )}
-
         {/* ================= Q&A ================= */}
         {activeTab === "qa" && (
           <section className="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm p-8 md:p-10">

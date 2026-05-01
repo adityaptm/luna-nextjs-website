@@ -100,19 +100,6 @@ export default function AboutLana() {
         </div>
       </section>
 
-      {/* SOCIAL MEDIA POSTS */}
-      <section className="rounded-[20px] border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-5 shadow-sm">
-        <SectionLabel label="Latest Posts" />
-        <div className="flex flex-col gap-5">
-          <div className="rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 flex justify-center w-full">
-            <iframe src="https://www.instagram.com/p/DXt_VxAE4Oj/embed" width="100%" height="450" frameBorder="0" scrolling="no" allowTransparency></iframe>
-          </div>
-          <div className="rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 flex justify-center w-full">
-            <iframe src="https://www.threads.net/@jkt48.lana.a/post/DW3WfvFGtbe/embed" width="100%" height="450" frameBorder="0" scrolling="no" allowTransparency></iframe>
-          </div>
-          <div className="rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 p-2 flex justify-center w-full" dangerouslySetInnerHTML={{ __html: `<blockquote class="twitter-tweet" data-theme="dark"><a href="https://twitter.com/AR_LanaJKT48/status/2048247400700256690"></a></blockquote><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>` }} />
-        </div>
-      </section>
       {/* VIDEO DEBUT */}
       <section className="rounded-[20px] border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-5 shadow-sm">
         <SectionLabel label="Video Debut" />

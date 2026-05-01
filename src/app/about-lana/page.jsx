@@ -156,90 +156,15 @@ export default function AboutLana() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {/* Instagram Post Mockup */}
-          <a href="https://www.instagram.com/jkt48.lana.a/" target="_blank" rel="noreferrer" className="bg-white dark:bg-slate-800 rounded-2xl border-2 border-slate-100 dark:border-slate-700 shadow-md overflow-hidden flex flex-col group transition-all hover:scale-[1.02]">
-            <div className="p-4 flex items-center gap-3 border-b-2 border-slate-100 dark:border-slate-700">
-              <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-yellow-400 to-purple-600 p-[2px]">
-                <div className="w-full h-full rounded-full bg-white p-[1.5px]">
-                  <img src="/images/lana1.webp" className="w-full h-full rounded-full object-cover" alt="Avatar" />
-                </div>
-              </div>
-              <span className="font-bold text-sm text-slate-950 dark:text-white">jkt48.lana.a</span>
-              <i className="bx bx-dots-horizontal-rounded ml-auto text-slate-500 dark:text-slate-400 text-xl"></i>
-            </div>
-            <div className="aspect-square w-full overflow-hidden">
-              <img src="/images/lana1.webp" className="w-full h-full object-cover transition-transform group-hover:scale-105" alt="Instagram Post" />
-            </div>
-            <div className="p-5">
-              <div className="flex gap-5 mb-3 text-2xl text-slate-900 dark:text-white">
-                <i className="bx bx-heart hover:text-red-500 cursor-pointer transition-colors"></i>
-                <i className="bx bx-message-rounded hover:text-accent cursor-pointer transition-colors"></i>
-                <i className="bx bx-paper-plane hover:text-accent cursor-pointer transition-colors"></i>
-                <i className="bx bx-bookmark ml-auto hover:text-accent cursor-pointer transition-colors"></i>
-              </div>
-              <p className="text-sm text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
-                <span className="font-bold mr-2 text-slate-950 dark:text-white">jkt48.lana.a</span>
-                Semangat hari ini! <i className="bx bx-sparkles text-accent"></i> #JKT48 #LanaJKT48
-              </p>
-            </div>
-          </a>
+          <div className="bg-white dark:bg-slate-800 rounded-2xl border-2 border-slate-100 dark:border-slate-700 shadow-md overflow-hidden flex flex-col group transition-all w-full flex-1">
+            <iframe src="https://www.instagram.com/p/DXt_VxAE4Oj/embed" width="100%" height="450" frameBorder="0" scrolling="no" allowTransparency></iframe>
+          </div>
 
-          {/* X (Twitter) Post Mockup */}
-          <a href="https://x.com/AR_LanaJKT48" target="_blank" rel="noreferrer" className="bg-white dark:bg-slate-800 rounded-2xl border-2 border-slate-100 dark:border-slate-700 shadow-md overflow-hidden flex flex-col group transition-all hover:scale-[1.02]">
-            <div className="p-5 flex gap-4">
-              <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border-2 border-slate-100 dark:border-slate-700">
-                <img src="/images/lana2.webp" className="w-full h-full object-cover" alt="Avatar" />
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-1.5">
-                  <span className="font-bold text-sm text-slate-950 dark:text-white">Lana</span>
-                  <span className="text-slate-500 dark:text-slate-400 text-xs font-bold">@AR_LanaJKT48 · 2h</span>
-                </div>
-                <p className="text-sm text-slate-800 dark:text-slate-200 mb-4 mt-1 font-medium leading-relaxed">
-                  Jangan lupa makan siang ya semuanya! <i className="bx bx-heart text-red-500"></i>
-                </p>
-                <div className="rounded-2xl overflow-hidden border-2 border-slate-100 dark:border-slate-700 mb-4 shadow-inner">
-                  <img src="/images/lana2.webp" className="w-full h-64 object-cover transition-transform group-hover:scale-105" alt="X Post" />
-                </div>
-                <div className="flex justify-between text-slate-500 dark:text-slate-400 text-xl max-w-[220px]">
-                  <i className="bx bx-comment hover:text-accent transition-colors"></i>
-                  <i className="bx bx-repost hover:text-green-500 transition-colors"></i>
-                  <i className="bx bx-heart hover:text-red-500 transition-colors"></i>
-                  <i className="bx bx-bar-chart hover:text-accent transition-colors"></i>
-                </div>
-              </div>
-            </div>
-          </a>
+          <div className="bg-white dark:bg-slate-800 rounded-2xl border-2 border-slate-100 dark:border-slate-700 shadow-md overflow-hidden flex flex-col group transition-all w-full flex-1 p-2" dangerouslySetInnerHTML={{ __html: `<blockquote class="twitter-tweet" data-theme="dark"><a href="https://twitter.com/AR_LanaJKT48/status/2048247400700256690"></a></blockquote><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>` }} />
 
-          {/* Threads Post Mockup */}
-          <a href="https://www.threads.com/@jkt48.lana.a?hl=en" target="_blank" rel="noreferrer" className="bg-white dark:bg-slate-800 rounded-2xl border-2 border-slate-100 dark:border-slate-700 shadow-md overflow-hidden flex flex-col group transition-all hover:scale-[1.02]">
-            <div className="p-4 flex gap-3">
-              <div className="flex flex-col items-center gap-2">
-                <div className="w-10 h-10 rounded-full overflow-hidden">
-                  <img src="/images/lana3.webp" className="w-full h-full object-cover" alt="Avatar" />
-                </div>
-                <div className="w-[2px] flex-1 bg-slate-100 dark:bg-slate-700"></div>
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-sm text-slate-950 dark:text-white">jkt48.lana.a</span>
-                  <span className="text-slate-500 dark:text-slate-400 text-xs font-bold">5h</span>
-                </div>
-                <p className="text-sm text-slate-800 dark:text-slate-200 mb-3 mt-1 font-medium flex items-center gap-2">
-                  Lagi latihan untuk show nanti malam. See you! <i className="bx bx-moon text-accent"></i>
-                </p>
-                <div className="rounded-xl overflow-hidden border-2 border-slate-100 dark:border-slate-700 mb-3 shadow-inner">
-                  <img src="/images/lana3.webp" className="w-full h-64 object-cover" alt="Threads Post" />
-                </div>
-                <div className="flex gap-5 text-slate-900 dark:text-white text-xl">
-                  <i className="bx bx-heart hover:text-red-500 transition-colors"></i>
-                  <i className="bx bx-message-rounded hover:text-accent transition-colors"></i>
-                  <i className="bx bx-repost hover:text-green-500 transition-colors"></i>
-                  <i className="bx bx-paper-plane hover:text-accent transition-colors"></i>
-                </div>
-              </div>
-            </div>
-          </a>
+          <div className="bg-white dark:bg-slate-800 rounded-2xl border-2 border-slate-100 dark:border-slate-700 shadow-md overflow-hidden flex flex-col group transition-all w-full flex-1">
+            <iframe src="https://www.threads.net/@jkt48.lana.a/post/DW3WfvFGtbe/embed" width="100%" height="450" frameBorder="0" scrolling="no" allowTransparency></iframe>
+          </div>
 
           {/* IDN Embed Player Section */}
           <div className="lg:col-span-3 bg-white dark:bg-slate-800 rounded-3xl border-2 border-slate-100 dark:border-slate-700 shadow-lg overflow-hidden flex flex-col">
