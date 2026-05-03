@@ -33,14 +33,22 @@ export async function GET() {
       next: { revalidate: 60 },
     });
 
-    // Jika masih 401, berarti Key memang ditolak oleh server pusat
+    // Jika masih 401 atau 500, berarti Key memang ditolak atau server pusat bermasalah
     if (!res1.ok) {
       const errorText = await res1.text().catch(() => "Unknown error");
       console.error(`DEBUG: Upstream returned ${res1.status} - ${errorText}`);
+      
+      let friendlyMessage = `JKT48Connect Error: ${res1.status}.`;
+      if (res1.status === 500) {
+        friendlyMessage = "Server JKT48Connect sedang bermasalah (500). Coba lagi nanti ya!";
+      } else if (res1.status === 401 || res1.status === 403) {
+        friendlyMessage = "Token API tidak valid atau kadaluarsa.";
+      }
+
       return NextResponse.json(
         {
           success: false,
-          message: `JKT48Connect Error: ${res1.status}.`,
+          message: friendlyMessage,
         },
         { status: res1.status },
       );

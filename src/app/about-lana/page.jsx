@@ -2,11 +2,140 @@
 import Link from "next/link";
 import Script from "next/script";
 import { Tweet } from "react-tweet";
-import { useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+
+// mapping nama panggilan → nama panjang
+const namaPanjang = {
+  erine: "Catherina Vallencia Kurniawan",
+  aralie: "Abigail Rachel",
+  delynn: "Adeline Wijaya",
+  alya: "Alya Amanda",
+  amanda: "Amanda Puspita Sukma Mulyadewi",
+  christy: "Angelina Christy",
+  anindya: "Anindya Ramadhani",
+  virgi: "Astrella Virgiananda",
+  auwia: "Aulia Riza",
+  lia: "Aurellia",
+  lana: "Aurhel Alana Tirta",
+  rilly: "Bong Aprilli",
+  cathy: "Cathleen Nixie",
+  elin: "Celline Thefani",
+  chelsea: "Chelsea Davina",
+  oniel: "Cornelia Vanisa",
+  cynthia: "Cynthia Yaputera",
+  danella: "Dena Natalia",
+  daisy: "Desy Natalia",
+  olla: "Febriola Sinambela",
+  feni: "Feni Fitriyanti",
+  fiony: "Fiony Alveria",
+  freya: "Freya Jayawardana",
+  fritzy: "Fritzy Rosmerian",
+  ella: "Gabriela Abigail Mewengkang",
+  gendis: "Gendis Mayrannisa",
+  gita: "Gita Sekar Andarini",
+  gracie: "Grace Octaviani",
+  greesel: "Greesella Adhalia",
+  giaa: "Hagia Sopia",
+  eli: "Helisma Putri",
+  lily: "Hillary Abigail",
+  maira: "Humaira Ramadhani",
+  indah: "Indah Cahya Nabilla",
+  ekin: "Jacqueline Immanuela",
+  trisha: "Jazzlyn Trisha",
+  jemima: "Jemima Evodie",
+  jessi: "Jessica Chandra",
+  lyn: "Jesslyn Elly",
+  kathrina: "Kathrina Irene",
+  lulu: "Lulu Salsabila",
+  marsha: "Marsha Lenathea",
+  michie: "Marsha Lenathea",
+  levi: "Michelle Levia",
+  mikaela: "Mikaela Kusjanto",
+  muthe: "Mutiara Azzahra",
+  nayla: "Nayla Suji Aurelia",
+  nachia: "Nina Tutachia",
+  intan: "Nur Intan",
+  oline: "Oline Manuel",
+  raisha: "Raisha Syifa Wardhana",
+  ribka: "Ribka Budiman",
+  nala: "Shabilqis Naila",
+  gracia: "Shania Gracia",
+  kimmy: "Victoria Kimberly",
+};
+
+function normalizeKey(name) {
+  return (name || "").toLowerCase().trim();
+}
+
+function formatIdDate(showDate) {
+  if (!showDate) return { dateStr: "-", timeStr: "-" };
+  const d = new Date(showDate);
+  const dateStr = d.toLocaleDateString("id-ID", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+  const timeStr = d.toLocaleTimeString("id-ID", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  return { dateStr, timeStr };
+}
 
 export default function AboutLana() {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [activeTab, setActiveTab] = useState("profile"); // profile, rekap, theater, hashtag
+
+  // --- Theater State ---
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [show, setShow] = useState(null);
+
+  async function loadSchedule() {
+    setLoading(true);
+    setError("");
+
+    try {
+      const res = await fetch("/api/show-theater", { cache: "no-store" });
+      const text = await res.text();
+      let json;
+      try {
+        json = JSON.parse(text);
+      } catch {
+        throw new Error("Gagal memuat format data theater.");
+      }
+
+      if (json?.success === true) {
+        setShow(json.data || null);
+        return;
+      }
+      
+      const msg = json?.message || "Gagal memuat jadwal";
+      setShow(null);
+      setError(msg);
+    } catch (e) {
+      setShow(null);
+      setError(e?.message || "Gagal memuat jadwal");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    loadSchedule();
+    const id = setInterval(loadSchedule, 180000);
+    return () => clearInterval(id);
+  }, []);
+
+  const computed = useMemo(() => {
+    if (!show) return null;
+    const { dateStr, timeStr } = formatIdDate(show.date);
+    const members = Array.isArray(show.members) ? show.members : show.lineup || [];
+    return { dateStr, timeStr, members };
+  }, [show]);
+  // --------------------
 
   const togglePlay = () => {
     if (audioRef.current) {
@@ -22,12 +151,42 @@ export default function AboutLana() {
   // GANTI pakai ID video YouTube Lana
   const VIDEO_ID = "R3HPWXgIwks";
 
+  const categories = [
+    { id: "profile", label: "Profile Lana", icon: "bx-user" },
+    { id: "rekap", label: "Rekap Show Lana", icon: "bx-history" },
+    { id: "theater", label: "Show Theater Lana", icon: "bx-building-house" },
+    { id: "hashtag", label: "Hashtag Lana", icon: "bx-hash" },
+  ];
+
   return (
     <div className="w-full">
-      <div className="mb-10">
-        <h1 className="font-display text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4">Biodata Aurhel Alana Tirta</h1>
-        <p className="text-slate-600 dark:text-slate-300 text-lg">Profil lengkap dan perjalanan karir Lana di JKT48.</p>
+      <div className="mb-8">
+        <h1 className="font-display text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4">Aurhel Alana Tirta</h1>
+        <p className="text-slate-600 dark:text-slate-300 text-lg">Halaman resmi informasi dan update terbaru Lana JKT48.</p>
       </div>
+
+      {/* ===========================
+          CATEGORY NAVIGATION
+          =========================== */}
+      <div className="flex flex-wrap gap-3 mb-10 p-2 bg-slate-100 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700">
+        {categories.map((cat) => (
+          <button
+            key={cat.id}
+            onClick={() => setActiveTab(cat.id)}
+            className={`flex-1 min-w-[140px] flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-bold text-[0.85rem] transition-all duration-300 ${
+              activeTab === cat.id
+                ? "bg-accent text-slate-900 shadow-lg shadow-accent/20 scale-[1.02]"
+                : "bg-transparent text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
+            }`}
+          >
+            <i className={`bx ${cat.icon} text-lg`}></i>
+            {cat.label}
+          </button>
+        ))}
+      </div>
+
+      {activeTab === "profile" && (
+        <div className="profile-tab-content animate-in fade-in slide-in-from-bottom-4 duration-500">
 
       {/* ===========================
           PROFILE CARD
@@ -315,7 +474,225 @@ export default function AboutLana() {
             Lihat Gallery <i className="bx bx-right-arrow-alt text-xl"></i>
           </Link>
         </div>
+        </section>
+      </div>
+    )}
+
+      {/* ===========================
+          REKAP SHOW TAB
+          =========================== */}
+      {activeTab === "rekap" && (
+        <section className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="bg-white dark:bg-slate-800 rounded-3xl border-2 border-slate-100 dark:border-slate-700 shadow-xl p-8 md:p-12 text-center">
+            <div className="w-20 h-20 bg-slate-100 dark:bg-slate-900 rounded-full flex items-center justify-center mx-auto mb-6">
+              <i className="bx bx-history text-4xl text-accent"></i>
+            </div>
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Rekap Show Lana</h2>
+            <p className="text-slate-500 dark:text-slate-400 max-w-md mx-auto mb-8">
+              Fitur Rekap Show sedang dalam pengembangan. Kamu bisa melihat riwayat penampilan Lana di theater JKT48 segera!
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <div className="px-6 py-3 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-700">
+                <div className="text-2xl font-black text-accent">--</div>
+                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest">Total Show</div>
+              </div>
+              <div className="px-6 py-3 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-700">
+                <div className="text-2xl font-black text-accent">--</div>
+                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest">Setlist Berbeda</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ===========================
+          THEATER TAB
+          =========================== */}
+      {activeTab === "theater" && (
+        <section className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-slate-800 rounded-3xl border-2 border-slate-100 dark:border-slate-700 shadow-sm">
+              <div className="w-12 h-12 border-4 border-slate-100 dark:border-slate-700 border-t-accent rounded-full animate-spin mb-4" />
+              <p className="text-slate-500 dark:text-slate-400 font-medium">Memuat jadwal theater...</p>
+            </div>
+          ) : error ? (
+            <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-8 rounded-3xl border-2 border-red-100 dark:border-red-900/30 text-center">
+              <i className="bx bx-error-circle text-4xl mb-3"></i>
+              <p className="font-bold text-lg mb-1">Yah, ada kendala!</p>
+              <p className="opacity-80 mb-6">{error}</p>
+              <button onClick={loadSchedule} className="px-6 py-2 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 transition-colors">Coba Lagi</button>
+            </div>
+          ) : !show || !computed ? (
+            <div className="bg-slate-50 dark:bg-slate-800/50 p-12 rounded-3xl border-2 border-dashed border-slate-200 dark:border-slate-700 text-center">
+              <i className="bx bx-calendar-x text-5xl text-slate-300 dark:text-slate-600 mb-4"></i>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Belum Ada Jadwal</h3>
+              <p className="text-slate-500 dark:text-slate-400">Saat ini belum ada jadwal theater terbaru untuk Lana.</p>
+            </div>
+          ) : (
+            <div className="bg-white dark:bg-slate-800 rounded-[32px] border-2 border-slate-100 dark:border-slate-700 shadow-2xl overflow-hidden group">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-900 text-white p-6 md:px-10 border-b-2 border-slate-800">
+                <div className="font-semibold text-lg flex items-center gap-2">
+                  <i className="bx bx-calendar text-accent text-xl"></i> {computed.dateStr}
+                </div>
+                <div className="font-medium text-[0.95rem] opacity-90 flex items-center gap-2 mt-2 sm:mt-0">
+                  <i className="bx bx-time-five text-accent text-xl"></i> Mulai: <span className="font-bold text-white">{computed.timeStr} WIB</span>
+                </div>
+              </div>
+
+              <div className="flex flex-col-reverse lg:flex-row p-6 md:p-10 gap-10">
+                <div className="flex-1">
+                  <div className="font-display text-2xl md:text-4xl font-black text-slate-950 dark:text-white mb-8 pb-6 border-b-2 border-slate-100 dark:border-slate-700 leading-tight">
+                    {String(show.title || "").toUpperCase()}
+                  </div>
+
+                  <div className="flex flex-wrap gap-3 mb-10">
+                    {computed.members.map((m, idx) => {
+                      const key = normalizeKey(m?.name);
+                      const fullName = namaPanjang[key] || m?.name || "";
+                      const isLana = key === "lana" || normalizeKey(fullName) === "aurhel alana tirta";
+
+                      return (
+                        <div
+                          key={`${key}-${idx}`}
+                          className={`px-4 py-2 rounded-xl text-[0.85rem] font-bold border-2 transition-all duration-300 cursor-default ${
+                            isLana 
+                              ? "bg-accent text-slate-900 border-accent shadow-lg shadow-accent/20 scale-110 z-10" 
+                              : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-100 dark:border-slate-700 hover:border-accent/40"
+                          }`}
+                        >
+                          {isLana && <i className="bx bxs-star mr-1.5"></i>}
+                          {fullName}
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  <div className="flex flex-wrap gap-4">
+                    {show.url && (
+                      <a href={show.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-8 py-3.5 bg-accent text-slate-900 rounded-2xl font-bold shadow-xl shadow-accent/20 hover:-translate-y-1 transition-all">
+                        <i className="bx bx-receipt text-xl"></i> Beli Tiket
+                      </a>
+                    )}
+                    {show?.idnTheater?.slug && (
+                      <a href={`https://www.idn.app/live/${show.idnTheater.slug}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-8 py-3.5 border-2 border-accent text-accent rounded-2xl font-bold hover:bg-accent/5 hover:-translate-y-1 transition-all">
+                        <i className="bx bx-play-circle text-xl"></i> Nonton di IDN
+                      </a>
+                    )}
+                  </div>
+                </div>
+
+                <div className="w-full lg:w-[320px] flex-shrink-0">
+                  <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl border border-slate-100 dark:border-slate-700 bg-slate-100 dark:bg-slate-900">
+                    {show.poster || show.banner || show.setlist_poster ? (
+                      <img src={show.poster || show.banner || show.setlist_poster} alt={show.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    ) : (
+                      <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 opacity-50">
+                        <i className="bx bx-image text-5xl mb-2"></i>
+                        <span className="font-bold">No Poster</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </section>
+      )}
+
+      {/* ===========================
+          HASHTAG TAB
+          =========================== */}
+      {activeTab === "hashtag" && (
+        <section className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white dark:bg-slate-800 p-8 rounded-3xl border-2 border-slate-100 dark:border-slate-700 shadow-lg">
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
+                <i className="bx bx-hash text-accent text-2xl"></i> Official Hashtags
+              </h3>
+              <div className="space-y-4">
+                {[
+                  { tag: "#AurhelAlana", desc: "Hashtag utama untuk Lana JKT48" },
+                  { tag: "#LanaJKT48", desc: "Hashtag pencarian di sosial media" },
+                  { tag: "#PesonakuLana", desc: "Hashtag khusus interaksi fans" },
+                  { tag: "#LanaGenerasi12", desc: "Hashtag debut generasi 12" },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-700 group hover:border-accent transition-colors">
+                    <div>
+                      <div className="font-bold text-accent text-lg">{item.tag}</div>
+                      <div className="text-xs text-slate-500 dark:text-slate-400">{item.desc}</div>
+                    </div>
+                    <button 
+                      onClick={() => navigator.clipboard.writeText(item.tag)}
+                      className="w-10 h-10 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-400 hover:text-accent hover:border-accent transition-all flex items-center justify-center"
+                    >
+                      <i className="bx bx-copy"></i>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-slate-900 to-slate-800 p-8 rounded-3xl text-white shadow-xl flex flex-col justify-between">
+              <div>
+                <h3 className="text-xl font-bold mb-4">Kenapa pakai Hashtag?</h3>
+                <p className="text-white/70 text-sm leading-relaxed mb-6">
+                  Menggunakan hashtag resmi membantu meningkatkan visibilitas Lana di media sosial dan memudahkan Lana untuk melihat dukungan dari kalian semua!
+                </p>
+                <div className="p-4 bg-white/10 rounded-2xl border border-white/10 italic text-sm text-white/90">
+                  &quot;Gunakan hashtag #PesonakuLana setiap kali kamu memposting foto atau dukungan untukku ya!&quot;
+                </div>
+              </div>
+              <div className="mt-8 flex items-center gap-3">
+                <i className="bx bxl-twitter text-3xl opacity-50"></i>
+                <i className="bx bxl-instagram text-3xl opacity-50"></i>
+                <i className="bx bxl-tiktok text-3xl opacity-50"></i>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ===========================
+          FAQ SECTION
+          =========================== */}
+      <section className="mt-20 mb-16">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-3">Pertanyaan Seputar Lana</h2>
+          <p className="text-slate-500 dark:text-slate-400">Segala hal yang ingin kamu ketahui tentang Lana JKT48.</p>
+        </div>
+
+        <div className="max-w-3xl mx-auto space-y-4">
+          {[
+            { q: "Kapan Lana ulang tahun?", a: "Lana berulang tahun setiap tanggal 14 September. Ia lahir pada tahun 2006." },
+            { q: "Apa hobi Lana?", a: "Lana sangat suka public speaking, menyanyi, dan menari. Ia juga senang berinteraksi dengan fans." },
+            { q: "Apa warna kesukaan Lana?", a: "Lana sangat menyukai warna Pink dan Putih." },
+            { q: "Apa makanan favorit Lana?", a: "Strawberry adalah makanan yang sangat disukai Lana!" },
+            { q: "Apa Jikoshoukai Lana?", a: "Dengan kekuatan bulan, aku akan menyihirmu dengan pesonaku! Halo, aku Lana." },
+          ].map((faq, i) => (
+            <FaqItem key={i} question={faq.q} answer={faq.a} />
+          ))}
+        </div>
       </section>
+    </div>
+  );
+}
+
+function FaqItem({ question, answer }) {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <div className="bg-white dark:bg-slate-800 rounded-2xl border-2 border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden transition-all">
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full p-6 text-left flex items-center justify-between gap-4 group"
+      >
+        <span className="font-bold text-slate-900 dark:text-white group-hover:text-accent transition-colors">{question}</span>
+        <i className={`bx ${isOpen ? 'bx-chevron-up' : 'bx-chevron-down'} text-2xl text-slate-400`}></i>
+      </button>
+      {isOpen && (
+        <div className="px-6 pb-6 text-slate-600 dark:text-slate-400 text-[0.95rem] leading-relaxed animate-in fade-in slide-in-from-top-2 duration-300">
+          {answer}
+        </div>
+      )}
     </div>
   );
 }
