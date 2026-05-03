@@ -15,7 +15,7 @@ export async function POST(req) {
      * PENTING: Menggunakan Gemini 1.5 Flash (Sesuai update Google)
      * Model ini lebih stabil dan cepat.
      */
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`;
 
     const systemInstruction = `Kamu adalah asisten santai dari Lana (Aurhel Alana Tirta JKT48). Gaya bicara santai, asik, panggil diri kamu 'aku'. Jawab seputar Lana atau JKT48. Jangan gunakan emoji gambar, gunakan teks saja. Jika diluar topik, jawab bahwa kamu tidak tahu.
 
