@@ -61,14 +61,21 @@ Jawab dengan ramah dan singkat dalam teks polos.`;
 
     const data = await response.json();
     
+    if (!apiKey) {
+      return NextResponse.json({ reply: "Aduh, sepertinya API Key-nya belum terpasang di Vercel nih. Cek Environment Variables ya!" });
+    }
+
     if (!response.ok || data.error) {
       console.error("Gemini API Error Detail:", JSON.stringify(data.error, null, 2));
       
-      if (response.status === 429) {
+      const errorMsg = data.error?.message || "Unknown error";
+      const statusCode = response.status;
+      
+      if (statusCode === 429) {
         return NextResponse.json({ reply: "Aduh, banyak banget yang tanya Luna nih 😅 Tunggu 1 menit ya biar aku istirahat dulu!" });
       }
       
-      return NextResponse.json({ reply: "Maaf, Lana lagi banyak yang nyariin nih. Coba tanya lagi bentar ya!" });
+      return NextResponse.json({ reply: `Maaf, ada kendala koneksi ke Gemini (${statusCode}: ${errorMsg}). Coba lagi bentar ya!` });
     }
 
     const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
