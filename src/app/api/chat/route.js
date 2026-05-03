@@ -9,7 +9,7 @@ export async function POST(req) {
     }
 
     // Menggunakan API Key yang diberikan user
-    const apiKey = process.env.GEMINI_API_KEY || "AIzaSyC7aLc0CqEj5tasuDIQZGiWOxghvZ7wW5o";
+    const apiKey = process.env.GEMINI_API_KEY;
     
     /**
      * PENTING: Menggunakan Gemini 1.5 Flash (Sesuai update Google)
