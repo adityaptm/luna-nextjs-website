@@ -1,8 +1,24 @@
+"use client";
 import Link from "next/link";
 import Script from "next/script";
 import { Tweet } from "react-tweet";
+import { useRef, useState } from "react";
 
 export default function AboutLana() {
+  const audioRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const togglePlay = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
   // GANTI pakai ID video YouTube Lana
   const VIDEO_ID = "R3HPWXgIwks";
 
@@ -83,9 +99,14 @@ export default function AboutLana() {
           <div className="mb-6 pb-6 border-b-2 border-slate-100 dark:border-slate-800">
             <h3 className="text-[0.75rem] tracking-[0.15em] uppercase text-slate-500 dark:text-slate-400 mb-3.5 flex items-center gap-2.5 font-bold">
               <i className="bx bx-comment-detail text-accent text-lg"></i> JIKOSHOUKAI
-              <button className="w-8 h-8 rounded-full border-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white cursor-pointer flex items-center justify-center transition-all hover:bg-accent hover:text-slate-900 hover:border-accent shadow-sm" aria-label="Play">
-                <i className="bx bx-play ml-0.5 text-xl"></i>
+              <button 
+                onClick={togglePlay}
+                className="w-8 h-8 rounded-full border-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white cursor-pointer flex items-center justify-center transition-all hover:bg-accent hover:text-slate-900 hover:border-accent shadow-sm" 
+                aria-label={isPlaying ? "Pause" : "Play"}
+              >
+                <i className={`bx ${isPlaying ? 'bx-pause' : 'bx-play'} ml-0.5 text-xl`}></i>
               </button>
+              <audio ref={audioRef} src="/audio/jiko_lana.mp3" onEnded={() => setIsPlaying(false)} className="hidden" />
             </h3>
             <div className="pl-5 border-l-4 border-accent bg-slate-50 dark:bg-slate-800/50 p-6 rounded-r-2xl">
               <p className="text-[1.1rem] italic text-slate-900 dark:text-white mb-2 font-medium">Dengan kekuatan bulan,</p>
