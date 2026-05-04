@@ -10,7 +10,13 @@ export async function GET() {
 
     if (error) throw error;
 
-    return NextResponse.json({ success: true, data: data || [] });
+    // Map spotifyid back to spotifyId for frontend
+    const formattedData = (data || []).map(msg => ({
+      ...msg,
+      spotifyId: msg.spotifyid
+    }));
+
+    return NextResponse.json({ success: true, data: formattedData });
   } catch (error) {
     console.error("GET Messages Error:", error);
     return NextResponse.json({ success: false, error: "Gagal mengambil pesan" }, { status: 500 });
@@ -32,18 +38,27 @@ export async function POST(req) {
           name, 
           message, 
           song, 
-          spotifyId,
+          spotifyid: spotifyId, // Postgres uses lowercase if not quoted
           timestamp: new Date().toISOString()
         }
       ])
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) {
+      console.error("Supabase Insert Error Detail:", error);
+      throw error;
+    }
 
-    return NextResponse.json({ success: true, data: data });
+    // Map back for the response
+    const formattedData = {
+      ...data,
+      spotifyId: data.spotifyid
+    };
+
+    return NextResponse.json({ success: true, data: formattedData });
   } catch (error) {
-    console.error("POST Messages Error:", error);
+    console.error("POST Messages Error Catch Block:", error);
     return NextResponse.json({ success: false, error: "Gagal mengirim pesan" }, { status: 500 });
   }
 }
