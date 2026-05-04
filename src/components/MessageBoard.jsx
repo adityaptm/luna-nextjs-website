@@ -193,8 +193,8 @@ export default function MessageBoard() {
                         <div className="px-5 py-8 text-center">
                           <i className="bx bx-search-alt-2 text-3xl text-slate-300 mb-2"></i>
                           <p className="text-slate-500 text-sm">Lagu tidak ditemukan atau ada kendala koneksi Spotify.</p>
-                          <p className="text-[0.65rem] text-slate-400 mt-1 italic">*Pastikan akun Spotify App Anda Premium</p>
                         </div>
+
                       )}
                     </div>
                   )}
