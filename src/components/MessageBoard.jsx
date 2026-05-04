@@ -2,11 +2,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 
-const getSpotifyId = (url) => {
-  if (!url) return null;
-  const match = url.match(/track\/([a-zA-Z0-9]+)/) || url.match(/spotify:track:([a-zA-Z0-9]+)/);
-  return match ? match[1] : null;
-};
+
 
 export default function MessageBoard() {
   const [messages, setMessages] = useState([]);
@@ -14,11 +10,22 @@ export default function MessageBoard() {
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  // Spotify Search States
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
-  const [selectedTrack, setSelectedTrack] = useState(null);
+  // Image Upload States
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        alert("Ukuran gambar maksimal 5MB!");
+        return;
+      }
+      setSelectedImage(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
 
   const fetchMessages = async () => {
     setLoading(true);
@@ -53,55 +60,56 @@ export default function MessageBoard() {
     };
   }, []);
 
-  // Spotify Search Effect
-  useEffect(() => {
-    if (!searchQuery.trim()) {
-      setSearchResults([]);
-      return;
-    }
 
-    const delayDebounceFn = setTimeout(async () => {
-      setIsSearching(true);
-      try {
-        const res = await fetch(`/api/spotify/search?q=${encodeURIComponent(searchQuery)}`);
-        const data = await res.json();
-        setSearchResults(data.tracks || []);
-      } catch (err) {
-        console.error("Spotify Search Error:", err);
-      } finally {
-        setIsSearching(false);
-      }
-    }, 500);
-
-    return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.message) return;
 
-    // Optional: validate spotify link
-    const spotifyId = getSpotifyId(formData.song);
-    if (formData.song && !spotifyId) {
-      alert("Link Spotify tidak valid! Pastikan link lagu (track) yang benar.");
-      return;
-    }
-
     setSubmitting(true);
+    let finalImageUrl = null;
+
     try {
+      // 1. Upload Image if exists
+      if (selectedImage) {
+        setUploadingImage(true);
+        const fileExt = selectedImage.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+        
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('message_images')
+          .upload(fileName, selectedImage);
+
+        setUploadingImage(false);
+
+        if (uploadError) {
+          console.error("Upload Error:", uploadError);
+          alert("Gagal mengunggah gambar. Pastikan Anda sudah menjalankan SQL untuk storage!");
+          setSubmitting(false);
+          return;
+        }
+        
+        const { data: publicUrlData } = supabase.storage
+          .from('message_images')
+          .getPublicUrl(fileName);
+          
+        finalImageUrl = publicUrlData.publicUrl;
+      }
+
+      // 2. Post Message
       const res = await fetch("/api/messages", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...formData,
-          spotifyId // Simpan ID untuk mempermudah embed
+          imageUrl: finalImageUrl
         })
       });
       const json = await res.json();
       if (json.success) {
         setFormData({ name: "", message: "", song: "" });
-        setSelectedTrack(null);
-        setSearchQuery("");
+        setSelectedImage(null);
+        setImagePreview(null);
         fetchMessages();
       }
     } catch (err) {
@@ -118,7 +126,7 @@ export default function MessageBoard() {
           Pesan Untuk Lana <i className="bx bx-envelope text-accent"></i>
         </h1>
         <p className="text-slate-600 dark:text-slate-400 font-medium max-w-xl mx-auto">
-          Tuliskan pesan dukunganmu untuk Aurhel Alana Tirta dan lampirkan lagu favoritmu dari Spotify!
+          Tuliskan pesan dukunganmu untuk Aurhel Alana Tirta dan lampirkan fanart atau foto favoritmu!
         </p>
       </div>
 
@@ -143,87 +151,36 @@ export default function MessageBoard() {
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2 px-1">Cari Lagu Spotify (Opsional)</label>
-                <div className="relative">
-                  <div className="relative">
+                <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2 px-1">Pilih Gambar (Opsional)</label>
+                
+                {!imagePreview ? (
+                  <div className="relative border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-2xl p-6 text-center hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer group">
                     <input 
-                      type="text"
-                      placeholder="Ketik judul lagu atau nama artis..."
-                      className="w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 rounded-2xl px-5 py-3 pr-12 text-[0.95rem] outline-none focus:border-accent transition-all dark:text-white"
-                      value={searchQuery}
-                      onChange={(e) => {
-                        setSearchQuery(e.target.value);
-                        if (!e.target.value) setSearchResults([]);
-                      }}
+                      type="file" 
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                     />
-                    {isSearching ? (
-                      <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                        <div className="w-5 h-5 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
-                      </div>
-                    ) : (
-                      <i className="bx bx-search absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 text-xl"></i>
-                    )}
+                    <i className="bx bx-image-add text-4xl text-slate-300 dark:text-slate-600 group-hover:text-accent transition-colors mb-2"></i>
+                    <p className="text-sm text-slate-500 font-medium">Klik atau drop gambar di sini</p>
+                    <p className="text-[0.65rem] text-slate-400 mt-1">*Maksimal 5MB (JPG, PNG, WEBP)</p>
                   </div>
-
-                  {/* Search Results Dropdown */}
-                  {(searchResults.length > 0 || (searchQuery.length > 2 && !isSearching)) && (
-                    <div className="absolute z-50 left-0 right-0 mt-2 bg-white dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 rounded-2xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-top-2">
-                      {searchResults.length > 0 ? (
-                        searchResults.map((track) => (
-                          <button
-                            key={track.id}
-                            type="button"
-                            className="w-full flex items-center gap-4 px-5 py-3 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors text-left border-b border-slate-100 dark:border-slate-700 last:border-none"
-                            onClick={() => {
-                              setSelectedTrack(track);
-                              setFormData({ ...formData, song: track.external_url });
-                              setSearchQuery("");
-                              setSearchResults([]);
-                            }}
-                          >
-                            <img src={track.thumbnail} alt={track.name} className="w-10 h-10 rounded-lg object-cover" />
-                            <div className="flex-1 min-w-0">
-                              <p className="font-bold text-slate-900 dark:text-white text-sm truncate">{track.name}</p>
-                              <p className="text-slate-500 text-xs truncate">{track.artist}</p>
-                            </div>
-                            <i className="bx bx-plus-circle text-accent text-xl"></i>
-                          </button>
-                        ))
-                      ) : (
-                        <div className="px-5 py-8 text-center">
-                          <i className="bx bx-search-alt-2 text-3xl text-slate-300 mb-2"></i>
-                          <p className="text-slate-500 text-sm">Lagu tidak ditemukan atau ada kendala koneksi Spotify.</p>
-                        </div>
-
-                      )}
-                    </div>
-                  )}
-
-                  {/* Selected Track Preview */}
-                  {selectedTrack && (
-                    <div className="mt-4 bg-accent/5 border-2 border-accent/20 rounded-2xl p-4 flex items-center gap-4 relative animate-in zoom-in-95">
-                      <img src={selectedTrack.thumbnail} alt={selectedTrack.name} className="w-14 h-14 rounded-xl object-cover shadow-sm" />
-                      <div className="flex-1 min-w-0">
-                        <p className="font-black text-slate-900 dark:text-white text-sm truncate">{selectedTrack.name}</p>
-                        <p className="text-slate-600 dark:text-slate-400 text-xs font-bold truncate">{selectedTrack.artist}</p>
-                      </div>
+                ) : (
+                  <div className="relative rounded-2xl overflow-hidden border-2 border-slate-200 dark:border-slate-700 group">
+                    <img src={imagePreview} alt="Preview" className="w-full h-40 object-cover" />
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                       <button 
                         type="button"
                         onClick={() => {
-                          setSelectedTrack(null);
-                          setFormData({ ...formData, song: "" });
+                          setSelectedImage(null);
+                          setImagePreview(null);
                         }}
-                        className="bg-white dark:bg-slate-800 w-8 h-8 rounded-full flex items-center justify-center text-red-500 shadow-md hover:scale-110 active:scale-90 transition-all"
+                        className="bg-red-500 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-lg flex items-center gap-2 hover:scale-105 active:scale-95 transition-all"
                       >
-                        <i className="bx bx-x"></i>
+                        <i className="bx bx-trash"></i> Hapus
                       </button>
                     </div>
-                  )}
-                </div>
-                {!selectedTrack && (
-                  <p className="text-[0.7rem] text-slate-500 mt-2 px-1 italic">
-                    *Cari lagu favoritmu dan klik untuk melampirkannya
-                  </p>
+                  </div>
                 )}
               </div>
 
@@ -244,8 +201,11 @@ export default function MessageBoard() {
                 disabled={submitting}
                 className="w-full bg-accent text-slate-900 font-black py-4 rounded-2xl shadow-lg hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-50 uppercase tracking-widest text-sm"
               >
-                {submitting ? (
-                  <div className="w-5 h-5 border-2 border-slate-900 border-t-transparent rounded-full animate-spin"></div>
+                {submitting || uploadingImage ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-5 h-5 border-2 border-slate-900 border-t-transparent rounded-full animate-spin"></div>
+                    <span>{uploadingImage ? "Mengunggah Gambar..." : "Mengirim..."}</span>
+                  </div>
                 ) : (
                   <><i className="bx bxs-paper-plane"></i> Kirim Sekarang</>
                 )}
@@ -292,18 +252,14 @@ export default function MessageBoard() {
                     <p className="text-slate-700 dark:text-slate-300 leading-relaxed font-medium italic">"{msg.message}"</p>
                   </div>
 
-                  {msg.spotifyId && (
-                    <div className="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm">
-                      <iframe 
-                        src={`https://open.spotify.com/embed/track/${msg.spotifyId}?utm_source=generator&theme=0`} 
-                        width="100%" 
-                        height="152" 
-                        frameBorder="0" 
-                        allowFullScreen="" 
-                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                  {msg.imageUrl && (
+                    <div className="rounded-2xl overflow-hidden shadow-sm">
+                      <img 
+                        src={msg.imageUrl} 
+                        alt="Lampiran" 
+                        className="w-full max-h-80 object-cover hover:scale-105 transition-transform duration-500" 
                         loading="lazy"
-                        className="bg-transparent"
-                      ></iframe>
+                      />
                     </div>
                   )}
                 </div>
