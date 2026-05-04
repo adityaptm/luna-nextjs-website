@@ -73,7 +73,7 @@ export default function MessageBoard() {
       // 1. Upload Image if exists
       if (selectedImage) {
         setUploadingImage(true);
-        const fileExt = selectedImage.name.split('.').pop();
+        const fileExt = selectedImage.name.includes('.') ? selectedImage.name.split('.').pop() : 'jpg';
         const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
         
         const { data: uploadData, error: uploadError } = await supabase.storage
@@ -154,17 +154,17 @@ export default function MessageBoard() {
                 <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2 px-1">Pilih Gambar (Opsional)</label>
                 
                 {!imagePreview ? (
-                  <div className="relative border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-2xl p-6 text-center hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer group">
+                  <label className="block w-full border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-2xl p-6 text-center hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer group">
                     <input 
                       type="file" 
                       accept="image/*"
                       onChange={handleImageChange}
-                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                      className="hidden"
                     />
                     <i className="bx bx-image-add text-4xl text-slate-300 dark:text-slate-600 group-hover:text-accent transition-colors mb-2"></i>
-                    <p className="text-sm text-slate-500 font-medium">Klik atau drop gambar di sini</p>
+                    <p className="text-sm text-slate-500 font-medium">Klik atau tap untuk pilih gambar</p>
                     <p className="text-[0.65rem] text-slate-400 mt-1">*Maksimal 5MB (JPG, PNG, WEBP)</p>
-                  </div>
+                  </label>
                 ) : (
                   <div className="relative rounded-2xl overflow-hidden border-2 border-slate-200 dark:border-slate-700 group">
                     <img src={imagePreview} alt="Preview" className="w-full h-40 object-cover" />
