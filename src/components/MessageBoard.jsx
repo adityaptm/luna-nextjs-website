@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
 
 const getSpotifyId = (url) => {
   if (!url) return null;
@@ -34,6 +35,22 @@ export default function MessageBoard() {
 
   useEffect(() => {
     fetchMessages();
+
+    // Realtime subscription
+    const subscription = supabase
+      .channel('messages-changes')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'messages' },
+        (payload) => {
+          setMessages((prev) => [payload.new, ...prev]);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(subscription);
+    };
   }, []);
 
   // Spotify Search Effect
