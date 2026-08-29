@@ -1,9 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import ChatBotLuna from "../components/ChatBotLuna";
+import MainLayoutWrapper from "../components/MainLayoutWrapper";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({
@@ -12,8 +10,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "LUNA.",
-  description: "Aurhel Alana Tirta - JKT48 Gen 12 fansite",
+  title: "LUNA. - Aurhel Alana Tirta",
+  description: "Official Fansite dedicated to Aurhel Alana Tirta (JKT48 Team Love)",
   icons: {
     icon: [
       { url: "/images/luna.webp", type: "image/webp" },
@@ -37,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="overflow-x-hidden">
+    <html lang="id" className="overflow-x-hidden">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
@@ -47,7 +45,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
       </head>
@@ -57,10 +55,10 @@ export default function RootLayout({
       >
         {/* Background Animations */}
         <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
-          {/* Moon (Only visible in Dark Mode or very subtle in light) */}
+          {/* Moon */}
           <div className="absolute top-[10%] right-[10%] w-32 h-32 md:w-48 md:h-48 rounded-full bg-gradient-to-br from-b100/20 to-b300/5 blur-xl moon-element opacity-60 dark:opacity-40" />
           
-          {/* Shooting Stars (Visible in both, but colored differently in CSS) */}
+          {/* Shooting Stars */}
           <div className="shooting-star opacity-30" style={{ top: '20%', animationDelay: '0s', animationDuration: '4s' }}></div>
           <div className="shooting-star opacity-20" style={{ top: '40%', animationDelay: '2s', animationDuration: '6s' }}></div>
           <div className="shooting-star opacity-40" style={{ top: '10%', animationDelay: '5s', animationDuration: '3s' }}></div>
@@ -103,12 +101,9 @@ export default function RootLayout({
           </div>
         </div>
 
-        <Header />
-        <main className="flex-1 w-full max-w-[1200px] mx-auto my-6 px-4 md:px-6 relative z-10">
+        <MainLayoutWrapper>
           {children}
-        </main>
-        <Footer />
-        <ChatBotLuna />
+        </MainLayoutWrapper>
       </body>
     </html>
   );

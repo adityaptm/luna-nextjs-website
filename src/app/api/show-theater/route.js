@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
-export const revalidate = 60; // Cache data selama 1 menit
+export const revalidate = 60;
 
 export async function GET() {
   try {
@@ -10,23 +10,26 @@ export async function GET() {
       "https://v2.jkt48connect.com/api/jkt48";
     const apiKey = process.env.JKT48CONNECT_PRIORITY_TOKEN || "sJbpVqLinYlp";
 
-    if (!apiKey) {
-      return NextResponse.json(
-        { success: false, message: "Server .env not configured" },
-        { status: 500 },
-      );
+    let res;
+    try {
+      res = await fetch(`${base}/theater?priority_token=${apiKey}`, {
+        method: "GET",
+        headers: {
+          "x-priority-token": apiKey,
+          Accept: "application/json",
+        },
+        signal: AbortSignal.timeout(12000),
+        next: { revalidate: 60 },
+      });
+    } catch (fetchErr) {
+      // Network error or timeout — return gracefully so the UI can show a friendly state
+      console.warn("SHOW-THEATER: External API unreachable:", fetchErr.message);
+      return NextResponse.json({
+        success: true,
+        message: "Layanan jadwal sedang tidak dapat dijangkau. Coba lagi nanti.",
+        data: null,
+      });
     }
-
-    // Fetch all theater shows
-    const res = await fetch(`${base}/theater?priority_token=${apiKey}`, {
-      method: "GET",
-      headers: {
-        "x-priority-token": apiKey,
-        Accept: "application/json",
-      },
-      signal: AbortSignal.timeout(30000), // Meningkatkan timeout ke 30 detik
-      next: { revalidate: 60 },
-    });
 
     if (!res.ok) {
       return NextResponse.json({
@@ -36,7 +39,13 @@ export async function GET() {
       });
     }
 
-    const body = await res.json();
+    let body;
+    try {
+      body = await res.json();
+    } catch {
+      return NextResponse.json({ success: true, data: null });
+    }
+
     const allShows = body.data || body.theater || (Array.isArray(body) ? body : []);
 
     if (allShows.length === 0) {
@@ -49,7 +58,7 @@ export async function GET() {
 
     // Filter shows for Lana (Aurhel Alana)
     const now = new Date();
-    const cutoff = new Date(now.getTime() - 24 * 60 * 60 * 1000); 
+    const cutoff = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
     const lanaShows = allShows
       .filter((show) => {
@@ -75,7 +84,6 @@ export async function GET() {
       });
     }
 
-    // Map all upcoming shows to a clean format
     const formattedShows = lanaShows.map((show) => ({
       id: show.schedule_id || show.id || show.reference_code,
       title: show.title || "TBA",
@@ -84,23 +92,19 @@ export async function GET() {
       poster: show.poster || show.banner || "",
       members: show.lineup || show.members || [],
       idnTheater: show.idnTheater || null,
-      url: show.reference_code 
+      url: show.reference_code
         ? `https://jkt48.com/purchase/schedule/show?code=${show.reference_code}`
-        : null
+        : null,
     }));
 
+    return NextResponse.json({ success: true, data: formattedShows });
+  } catch (err) {
+    console.error("SHOW-THEATER ERROR:", err.message);
+    // Return graceful null instead of 500
     return NextResponse.json({
       success: true,
-      data: formattedShows,
+      message: "Gagal mengambil jadwal. Coba lagi nanti.",
+      data: null,
     });
-
-
-  } catch (err) {
-    console.error("CRITICAL ROUTE ERROR:", err.message);
-    return NextResponse.json(
-      { success: false, error: err.message },
-      { status: 500 },
-    );
   }
 }
-

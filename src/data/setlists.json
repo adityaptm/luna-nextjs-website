@@ -1,0 +1,107 @@
+{
+  "stats": {
+    "totalShows": 103,
+    "totalSetlists": 7,
+    "totalUnitSongs": 15
+  },
+  "items": [
+    {
+      "id": 1,
+      "title": "Passion 200%",
+      "period": "10 April - Present",
+      "badge": "5 Show",
+      "image": "/images/setlists/passion200.svg",
+      "songs": [
+        "Wagamama na Nagareboshi"
+      ],
+      "shows": 5,
+      "order": 1,
+      "active": true
+    },
+    {
+      "id": 2,
+      "title": "Ramune No Namikata",
+      "period": "15 Jan 2023 - Present",
+      "badge": "3 Show",
+      "image": "/images/setlists/ramune.svg",
+      "songs": [
+        "Nice To Meet You"
+      ],
+      "shows": 3,
+      "order": 2,
+      "active": true
+    },
+    {
+      "id": 3,
+      "title": "Renai Kinshi Jourei",
+      "period": "20 Mar 2021 - 26 Dec 2025",
+      "badge": "2 Shows",
+      "image": "/images/setlists/renai.svg",
+      "songs": [
+        "Renai Kinshi Jourei"
+      ],
+      "shows": 2,
+      "order": 3,
+      "active": true
+    },
+    {
+      "id": 4,
+      "title": "Te wo Tsunaginagara",
+      "period": "01 Feb 2025 - Present",
+      "badge": "4 Shows",
+      "image": "/images/setlists/twt.svg",
+      "songs": [
+        "Ame no Pianist"
+      ],
+      "shows": 4,
+      "order": 4,
+      "active": true
+    },
+    {
+      "id": 5,
+      "title": "Kira-Kira Girls",
+      "period": "24 Nov 2025 - 27 Dec 2025",
+      "badge": "5 Shows",
+      "image": "/images/setlists/kirakira.svg",
+      "songs": [
+        "Kimi to Boku no Kankei",
+        "Itoshiki Natasha"
+      ],
+      "shows": 5,
+      "order": 5,
+      "active": true
+    },
+    {
+      "id": 6,
+      "title": "Aitakatta",
+      "period": "30 Apr 2023 - 12 Dec 2025",
+      "badge": "41 Shows",
+      "image": "/images/setlists/aitakatta.svg",
+      "songs": [
+        "Nageki no Figure",
+        "Glass no I Love You",
+        "Senaka Kara Dakishimete",
+        "Koi No Plan",
+        "Nagisa no Cherry",
+        "Namida no Shounan"
+      ],
+      "shows": 41,
+      "order": 6,
+      "active": true
+    },
+    {
+      "id": 7,
+      "title": "Pajama Drive",
+      "period": "30 May 2024 - Present",
+      "badge": "42 Shows",
+      "image": "/images/setlists/pajamadrive.svg",
+      "songs": [
+        "Pajama Drive",
+        "Kagami no Naka no Jean Da Arc"
+      ],
+      "shows": 42,
+      "order": 7,
+      "active": true
+    }
+  ]
+}

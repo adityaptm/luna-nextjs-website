@@ -1,0 +1,78 @@
+{
+  "socials": {
+    "x": "https://x.com/AR_LanaJKT48",
+    "xHandle": "@AR_LanaJKT48",
+    "instagram": "https://www.instagram.com/jkt48.lana.a/",
+    "instagramHandle": "@jkt48.lana.a",
+    "tiktok": "https://www.tiktok.com/@jkt48.lana",
+    "tiktokHandle": "@jkt48.lana",
+    "threads": "https://www.threads.net/@jkt48.lana.a",
+    "threadsHandle": "@jkt48.lana.a",
+    "showroom": "https://www.showroom-live.com/r/JKT48_Lana",
+    "idn": "https://www.idn.app/jkt48_lana"
+  },
+  "latestUpdates": {
+    "instagramEmbed": "https://www.instagram.com/p/DXt_VxAE4Oj/embed",
+    "instagramUrl": "https://www.instagram.com/jkt48.lana.a/",
+    "threadsEmbed": "https://www.threads.net/@jkt48.lana.a/post/DW3WfvFGtbe/embed",
+    "threadsUrl": "https://www.threads.net/@jkt48.lana.a",
+    "tweetText": "Halo semuanya! Selamat malam! Jangan lupa istirahat yaa, besok semangat lagi! 🌙✨",
+    "tweetDate": "2026",
+    "tweetUrl": "https://x.com/AR_LanaJKT48",
+    "tiktokVideoUrl": "https://www.tiktok.com/@jkt48.lana",
+    "tiktokTitle": "Video Terbaru Lana di TikTok"
+  },
+  "rekapShow": {
+    "totalShows": 52,
+    "totalSetlists": 5,
+    "totalUnitSongs": 10,
+    "setlists": [
+      {
+        "name": "Aitakatta (Ingin Bertemu)",
+        "period": "01 Mar 2024 - Sekarang",
+        "shows": 24,
+        "unitSongs": [
+          "Nageki no Figure",
+          "Namida no Shounan",
+          "Nagisa no Cherry",
+          "Koi no Plan",
+          "Senaka Kara Dakishimete"
+        ]
+      },
+      {
+        "name": "Pajama Drive",
+        "period": "30 Mei 2024 - Sekarang",
+        "shows": 18,
+        "unitSongs": [
+          "Pajama Drive",
+          "Kagami no Naka no Jean Da Arc"
+        ]
+      },
+      {
+        "name": "Ramune no Nomikata (Cara Meminum Ramune)",
+        "period": "2024 - Sekarang",
+        "shows": 4,
+        "unitSongs": [
+          "Manazashi Sayonara",
+          "Nice to Meet You"
+        ]
+      },
+      {
+        "name": "Te wo Tsunaginagara (Sambil Menggandeng Erat Tanganku)",
+        "period": "2024 - Sekarang",
+        "shows": 3,
+        "unitSongs": [
+          "Kono Mune no Barcode"
+        ]
+      },
+      {
+        "name": "Renai Kinshi Jourei (Aturan Anti Cinta)",
+        "period": "2025 - Sekarang",
+        "shows": 3,
+        "unitSongs": [
+          "Manatsu no Christmas Rose"
+        ]
+      }
+    ]
+  }
+}

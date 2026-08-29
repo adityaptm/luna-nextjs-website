@@ -7,6 +7,10 @@
   --font-body: "DM Sans", sans-serif;
   
   --color-accent: #fbbf24;
+  --color-love: #f43f5e;
+  --color-love-light: #fda4af;
+  --color-love-dark: #881337;
+
   --color-b50: #e6f1fb;
   --color-b100: #b5d4f4;
   --color-b200: #85b7eb;
@@ -91,6 +95,7 @@
   --animate-pulse-subtle: pulse-subtle 2s ease-in-out infinite;
   --animate-shine: shine 3s linear infinite;
   --animate-spin-slow: spin-slow 8s linear infinite;
+  --animate-marquee: marquee 30s linear infinite;
 
   @keyframes pulse-subtle {
     0%, 100% { transform: scale(1.1); filter: brightness(1); }
@@ -106,6 +111,21 @@
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
   }
+
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 35s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
 }
 
 .shooting-star {
@@ -124,7 +144,6 @@
   background: linear-gradient(90deg, #ffffff, transparent);
 }
 
-/* Hide shooting stars in light mode if background is too white */
 body:not(.dark-mode) .shooting-star {
   background: linear-gradient(90deg, var(--color-b400), transparent);
   opacity: 0.15;
@@ -147,21 +166,21 @@ body:not(.dark-mode) .shooting-star {
 
 :root {
   --bg: #fafaf9;
-  --bg-card: #f1f1f0;
-  --bg-soft: #e5e5e4;
+  --bg-card: #ffffff;
+  --bg-soft: #f4f4f5;
   --border: rgba(4, 44, 83, 0.1);
   --border-md: rgba(4, 44, 83, 0.18);
-  --text-primary: #042c53;
-  --text-muted: #4b5563;
+  --text-primary: #0f172a;
+  --text-muted: #64748b;
   --accent: #fbbf24;
 }
 
 body.dark-mode {
-  --bg: #050f1c;
-  --bg-card: #111a2e;
+  --bg: #030712;
+  --bg-card: #0f172a;
   --bg-soft: #1e293b;
-  --border: rgba(181, 212, 244, 0.1);
-  --border-md: rgba(181, 212, 244, 0.2);
+  --border: rgba(244, 63, 94, 0.15);
+  --border-md: rgba(244, 63, 94, 0.25);
   --text-primary: #f8fafc;
   --text-muted: #94a3b8;
   --accent: #fbbf24;
@@ -190,6 +209,21 @@ body {
   background: var(--bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: #5499e0;
+  background: #f43f5e;
   border-radius: 99px;
+}
+
+/* 3D Flip Card Utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
 }

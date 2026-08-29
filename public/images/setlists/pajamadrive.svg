@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" width="400" height="250">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b"/>
+      <stop offset="50%" stop-color="#312e81"/>
+      <stop offset="100%" stop-color="#4338ca"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#bg)"/>
+  
+  <!-- Moon and stars -->
+  <text x="320" y="70" font-size="34">🌙</text>
+  <text x="60" y="60" font-size="18">✨</text>
+  <text x="90" y="190" font-size="20">✨</text>
+  <text x="330" y="180" font-size="16">⭐</text>
+
+  <text x="200" y="105" font-family="'Brush Script MT', 'Arial Rounded MT Bold', cursive, sans-serif" font-size="44" font-weight="900" fill="#c7d2fe" text-anchor="middle" font-style="italic">Pajama</text>
+  
+  <text x="200" y="165" font-family="'Arial Black', sans-serif" font-size="52" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="4">DRIVE</text>
+</svg>

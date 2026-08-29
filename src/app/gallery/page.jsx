@@ -6,51 +6,66 @@ import { useState, useEffect, useCallback } from "react";
 export default function GalleryPage() {
   const [lightbox, setLightbox] = useState(null); // index of open image
   
-  const photos = [
-    { src: "/images/lana1.webp", alt: "Lana 1" },
-    { src: "/images/lana2.webp", alt: "Lana 2" },
-    { src: "/images/lana3.webp", alt: "Lana 3" },
-    { src: "/images/luna.jpg", alt: "Luna 1" },
-    { src: "/images/luna2.jpg", alt: "Luna 2" },
-    { src: "/images/luna3.jpg", alt: "Luna 3" },
-    { src: "/images/luna4.jpg", alt: "Luna 4" },
-    { src: "/images/luna5.jpg", alt: "Luna 5" },
-    { src: "/images/luna6.jpg", alt: "Luna 6" },
-    { src: "/images/luna7.jpg", alt: "Luna 7" },
-    { src: "/images/luna8.jpg", alt: "Luna 8" },
-    { src: "/images/luna9.jpg", alt: "Luna 9" },
-    { src: "/images/luna10.jpg", alt: "Luna 10" },
-    { src: "/images/luna11.jpg", alt: "Luna 11" },
-    { src: "/images/luna12.jpg", alt: "Luna 12" },
-    { src: "/images/luna13.jpg", alt: "Luna 13" },
-    { src: "/images/luna14.jpg", alt: "Luna 14" },
-    { src: "/images/luna15.jpg", alt: "Luna 15" },
-    { src: "/images/luna16.jpg", alt: "Luna 16" },
-    { src: "/images/luna17.jpg", alt: "Luna 17" },
-    { src: "/images/luna18.jpg", alt: "Luna 18" },
-    { src: "/images/luna19.jpg", alt: "Luna 19" },
-    { src: "/images/luna20.jpg", alt: "Luna 20" },
-    { src: "/images/luna21.jpg", alt: "Luna 21" },
-    { src: "/images/luna22.jpg", alt: "Luna 22" },
-    { src: "/images/luna23.jpg", alt: "Luna 23" },
-    { src: "/images/luna24.jpg", alt: "Luna 24" },
-    { src: "/images/luna25.jpg", alt: "Luna 25" },
-    { src: "/images/luna26.jpg", alt: "Luna 26" },
-    { src: "/images/luna27.jpg", alt: "Luna 27" },
-    { src: "/images/luna28.jpg", alt: "Luna 28" },
-    { src: "/images/luna29.jpg", alt: "Luna 29" },
-    { src: "/images/luna30.jpg", alt: "Luna 30" },
-    { src: "/images/luna31.jpg", alt: "Luna 31" }
+  const defaultPhotos = [
+    { src: "/images/lana1.webp", alt: "Lana 1", caption: "Lana Aesthetic" },
+    { src: "/images/lana2.webp", alt: "Lana 2", caption: "Lana Casual" },
+    { src: "/images/lana3.webp", alt: "Lana 3", caption: "Lana Close-up" },
+    { src: "/images/luna.jpg", alt: "Luna 1", caption: "" },
+    { src: "/images/luna2.jpg", alt: "Luna 2", caption: "" },
+    { src: "/images/luna3.jpg", alt: "Luna 3", caption: "" },
+    { src: "/images/luna4.jpg", alt: "Luna 4", caption: "" },
+    { src: "/images/luna5.jpg", alt: "Luna 5", caption: "" },
+    { src: "/images/luna6.jpg", alt: "Luna 6", caption: "" },
+    { src: "/images/luna7.jpg", alt: "Luna 7", caption: "" },
+    { src: "/images/luna8.jpg", alt: "Luna 8", caption: "" },
+    { src: "/images/luna9.jpg", alt: "Luna 9", caption: "" },
+    { src: "/images/luna10.jpg", alt: "Luna 10", caption: "" },
+    { src: "/images/luna11.jpg", alt: "Luna 11", caption: "" },
+    { src: "/images/luna12.jpg", alt: "Luna 12", caption: "" },
+    { src: "/images/luna13.jpg", alt: "Luna 13", caption: "" },
+    { src: "/images/luna14.jpg", alt: "Luna 14", caption: "" },
+    { src: "/images/luna15.jpg", alt: "Luna 15", caption: "" },
+    { src: "/images/luna16.jpg", alt: "Luna 16", caption: "" },
+    { src: "/images/luna17.jpg", alt: "Luna 17", caption: "" },
+    { src: "/images/luna18.jpg", alt: "Luna 18", caption: "" },
+    { src: "/images/luna19.jpg", alt: "Luna 19", caption: "" },
+    { src: "/images/luna20.jpg", alt: "Luna 20", caption: "" },
+    { src: "/images/luna21.jpg", alt: "Luna 21", caption: "" },
+    { src: "/images/luna22.jpg", alt: "Luna 22", caption: "" },
+    { src: "/images/luna23.jpg", alt: "Luna 23", caption: "" },
+    { src: "/images/luna24.jpg", alt: "Luna 24", caption: "" },
+    { src: "/images/luna25.jpg", alt: "Luna 25", caption: "" },
+    { src: "/images/luna26.jpg", alt: "Luna 26", caption: "" },
+    { src: "/images/luna27.jpg", alt: "Luna 27", caption: "" },
+    { src: "/images/luna28.jpg", alt: "Luna 28", caption: "" },
+    { src: "/images/luna29.jpg", alt: "Luna 29", caption: "" },
+    { src: "/images/luna30.jpg", alt: "Luna 30", caption: "" },
+    { src: "/images/luna31.jpg", alt: "Luna 31", caption: "" },
   ];
+
+  const [photos, setPhotos] = useState(defaultPhotos);
+
+  useEffect(() => {
+    async function loadGallery() {
+      try {
+        const res = await fetch("/api/gallery");
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+          setPhotos(json.data);
+        }
+      } catch {}
+    }
+    loadGallery();
+  }, []);
 
   const reversed = [...photos].reverse();
 
   const prev = useCallback(() => {
-    setLightbox(i => (i <= 0 ? reversed.length - 1 : i - 1));
+    setLightbox((i) => (i <= 0 ? reversed.length - 1 : i - 1));
   }, [reversed.length]);
 
   const next = useCallback(() => {
-    setLightbox(i => (i >= reversed.length - 1 ? 0 : i + 1));
+    setLightbox((i) => (i >= reversed.length - 1 ? 0 : i + 1));
   }, [reversed.length]);
 
   // Keyboard navigation
@@ -68,8 +83,12 @@ export default function GalleryPage() {
   // Lock body scroll when lightbox is open
   useEffect(() => {
     document.body.style.overflow = lightbox !== null ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [lightbox]);
+
+  const currentPhoto = lightbox !== null ? reversed[lightbox] : null;
 
   return (
     <div className="w-full">
@@ -79,7 +98,7 @@ export default function GalleryPage() {
           Gallery Aurhel Alana Tirta
         </h1>
         <p className="text-slate-500 dark:text-slate-300 text-lg mb-6 font-medium">
-          {reversed.length} foto · Klik untuk melihat lebih besar
+          {reversed.length} foto · Klik untuk melihat lebih besar & caption lengkap
         </p>
         <Link
           href="/about-lana"
@@ -90,77 +109,115 @@ export default function GalleryPage() {
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-20">
-        {reversed.map((p, i) => (
-          <button
-            key={i}
-            onClick={() => setLightbox(i)}
-            className="block w-full aspect-square rounded-xl overflow-hidden border-2 border-slate-100 dark:border-slate-800 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-accent group relative"
-          >
-            <img
-              src={p.src}
-              alt={p.alt}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-              <i className="bx bx-zoom-in text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-lg"></i>
-            </div>
-          </button>
-        ))}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-20">
+        {reversed.map((p, i) => {
+          const captionText = p.caption || p.alt;
+          return (
+            <button
+              key={i}
+              onClick={() => setLightbox(i)}
+              className="block w-full rounded-2xl overflow-hidden border-2 border-slate-100 dark:border-slate-800 shadow-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 hover:border-accent group relative text-left bg-white dark:bg-slate-900"
+            >
+              <div className="aspect-square w-full overflow-hidden relative bg-slate-950">
+                <img
+                  src={p.src}
+                  alt={p.alt || "Lana"}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-full bg-white/80 text-slate-950 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100 shadow-lg">
+                    <i className="bx bx-zoom-in text-xl"></i>
+                  </div>
+                </div>
+              </div>
+
+              {captionText && (
+                <div className="p-3 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800">
+                  <p className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">
+                    {captionText}
+                  </p>
+                </div>
+              )}
+            </button>
+          );
+        })}
       </div>
 
       {/* Lightbox */}
-      {lightbox !== null && (
+      {lightbox !== null && currentPhoto && (
         <div
-          className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center"
+          className="fixed inset-0 z-[9999] bg-black/95 flex flex-col items-center justify-between p-4"
           onClick={() => setLightbox(null)}
         >
-          {/* Close */}
-          <button
-            className="absolute top-4 right-4 w-11 h-11 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white text-2xl transition-all z-10"
-            onClick={() => setLightbox(null)}
-          >
-            <i className="bx bx-x"></i>
-          </button>
+          {/* Top Bar */}
+          <div className="w-full max-w-5xl flex items-center justify-between z-10 pt-2">
+            <div className="bg-black/60 backdrop-blur-md text-white text-xs font-bold px-4 py-2 rounded-full border border-white/10">
+              {lightbox + 1} / {reversed.length}
+            </div>
 
-          {/* Counter */}
-          <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-black/50 text-white text-xs font-bold px-3 py-1.5 rounded-full backdrop-blur">
-            {lightbox + 1} / {reversed.length}
+            {/* Close Button */}
+            <button
+              className="w-11 h-11 bg-white/10 hover:bg-white/25 rounded-full flex items-center justify-center text-white text-2xl transition-all"
+              onClick={() => setLightbox(null)}
+            >
+              <i className="bx bx-x"></i>
+            </button>
           </div>
 
-          {/* Prev */}
+          {/* Prev Button */}
           <button
-            className="absolute left-4 w-11 h-11 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white text-2xl transition-all z-10"
-            onClick={e => { e.stopPropagation(); prev(); }}
+            className="fixed left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/25 rounded-full flex items-center justify-center text-white text-2xl transition-all z-10"
+            onClick={(e) => {
+              e.stopPropagation();
+              prev();
+            }}
           >
             <i className="bx bx-chevron-left"></i>
           </button>
 
-          {/* Image */}
-          <img
-            src={reversed[lightbox].src}
-            alt={reversed[lightbox].alt}
-            className="max-w-[90vw] max-h-[85vh] object-contain rounded-xl shadow-2xl"
-            onClick={e => e.stopPropagation()}
-          />
+          {/* Image & Caption Center Container */}
+          <div
+            className="flex-1 flex flex-col items-center justify-center max-h-[75vh] my-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={currentPhoto.src}
+              alt={currentPhoto.alt || "Lana"}
+              className="max-w-[90vw] max-h-[70vh] object-contain rounded-2xl shadow-2xl"
+            />
 
-          {/* Next */}
+            {(currentPhoto.caption || currentPhoto.alt) && (
+              <div className="mt-4 px-6 py-2.5 bg-black/70 backdrop-blur-md border border-white/15 text-white rounded-full text-sm font-bold shadow-xl max-w-lg text-center">
+                {currentPhoto.caption || currentPhoto.alt}
+              </div>
+            )}
+          </div>
+
+          {/* Next Button */}
           <button
-            className="absolute right-4 w-11 h-11 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white text-2xl transition-all z-10"
-            onClick={e => { e.stopPropagation(); next(); }}
+            className="fixed right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/25 rounded-full flex items-center justify-center text-white text-2xl transition-all z-10"
+            onClick={(e) => {
+              e.stopPropagation();
+              next();
+            }}
           >
             <i className="bx bx-chevron-right"></i>
           </button>
 
           {/* Thumbnails strip */}
-          <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1.5 px-4 overflow-x-auto">
+          <div className="w-full max-w-3xl flex justify-center gap-1.5 px-4 pb-2 overflow-x-auto z-10">
             {reversed.map((p, i) => (
               <button
                 key={i}
-                onClick={e => { e.stopPropagation(); setLightbox(i); }}
-                className={`w-10 h-10 flex-shrink-0 rounded-md overflow-hidden border-2 transition-all ${
-                  i === lightbox ? "border-accent scale-110" : "border-transparent opacity-50 hover:opacity-80"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setLightbox(i);
+                }}
+                className={`w-12 h-12 flex-shrink-0 rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${
+                  i === lightbox
+                    ? "border-accent scale-110 shadow-lg"
+                    : "border-transparent opacity-40 hover:opacity-80"
                 }`}
               >
                 <img src={p.src} alt="" className="w-full h-full object-cover" />

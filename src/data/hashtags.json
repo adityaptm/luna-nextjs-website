@@ -1,0 +1,13 @@
+[
+  { "id": 1, "tag": "#VoyageOfLana", "desc": "Dukungan Umum", "icon": "bx bx-rocket", "color": "text-purple-500", "active": true },
+  { "id": 2, "tag": "#LaNaight", "desc": "Ucapan Selamat Malam", "icon": "bx bx-moon", "color": "text-indigo-400", "active": true },
+  { "id": 3, "tag": "#PremierJourLana", "desc": "Dukungan Show Setlist Pertama", "icon": "bx bx-star", "color": "text-yellow-400", "active": true },
+  { "id": 4, "tag": "#AurheLive", "desc": "Nonton Live SR/IDN", "icon": "bx bx-broadcast", "color": "text-red-500", "active": true },
+  { "id": 5, "tag": "#AurheView", "desc": "Review Penampilan Theater", "icon": "bx bx-show", "color": "text-blue-400", "active": true },
+  { "id": 6, "tag": "#LanAffirmation", "desc": "Dukungan Oshi / Balas PM", "icon": "bx bx-heart", "color": "text-pink-500", "active": true },
+  { "id": 7, "tag": "#CeritaLana", "desc": "Balas PM", "icon": "bx bx-book-open", "color": "text-emerald-500", "active": true },
+  { "id": 8, "tag": "#RaBulana", "desc": "Upload Foto Hari Rabu", "icon": "bx bx-image", "color": "text-cyan-500", "active": true },
+  { "id": 9, "tag": "#RHenaiKinshiJourei", "desc": "Request Hour 2026", "icon": "bx bx-music", "color": "text-rose-400", "active": true },
+  { "id": 10, "tag": "#JKT48RequestAURhel2026", "desc": "Request Hour 2026", "icon": "bx bx-trophy", "color": "text-yellow-400", "active": true },
+  { "id": 11, "tag": "#JKT48RequestHour2026", "desc": "Request Hour 2026", "icon": "bx bx-medal", "color": "text-yellow-400", "active": true }
+]
