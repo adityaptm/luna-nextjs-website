@@ -1,6 +1,6 @@
 "use client";
 
-export default function LiveStatus({ data, loading }) {
+export default function LiveStatus({ data = null, loading = false } = {}) {
   if (loading) {
     return (
       <div className="bg-white dark:bg-slate-800 rounded-3xl border-2 border-slate-100 dark:border-slate-700 shadow-lg overflow-hidden p-10 flex flex-col items-center justify-center gap-4">

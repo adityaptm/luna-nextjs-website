@@ -102,7 +102,7 @@ function SetlistFlipCard({ item }) {
   );
 }
 
-export default function SetlistShowSection({ defaultStats, defaultItems }) {
+export default function SetlistShowSection({ defaultStats = null, defaultItems = null } = {}) {
   const [stats, setStats] = useState(
     defaultStats || { totalShows: 103, totalSetlists: 7, totalUnitSongs: 15 }
   );
